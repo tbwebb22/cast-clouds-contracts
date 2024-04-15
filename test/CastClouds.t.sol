@@ -136,4 +136,26 @@ contract CastCloudsTest is Test {
         vm.expectRevert(CastClouds.MintingOpen.selector);
         castClouds.openMinting(1);
     }
+
+    function test_TotalSupply() public {
+        assertEq(castClouds.totalSupply(0), 0);
+
+        vm.prank(owner);
+        castClouds.openMinting(0);
+
+        vm.prank(alice);
+        castClouds.mint(0);
+
+        assertEq(castClouds.totalSupply(0), 1);
+
+        vm.prank(bob);
+        castClouds.mint(0);
+
+        assertEq(castClouds.totalSupply(0), 2);
+
+        vm.prank(chad);
+        castClouds.mint(0);
+
+        assertEq(castClouds.totalSupply(0), 3);        
+    }
 }
