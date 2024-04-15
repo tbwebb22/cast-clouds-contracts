@@ -48,7 +48,7 @@ $ anvil
 ### Deploy
 
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+$ forge create ./src/CastClouds.sol:CastClouds --rpc-url $BASE_SEPOLIA_RPC --constructor-args 0x6bd62FeB486Bf699Ac04eD6DC09dE36D11720509 --account deployer
 ```
 
 ### Cast
@@ -64,3 +64,5 @@ $ forge --help
 $ anvil --help
 $ cast --help
 ```
+
+Base Sepolia deployment address: 0x8922242064f5d41eF904fBC52Da8781a05b3BA82
