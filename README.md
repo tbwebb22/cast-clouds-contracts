@@ -46,23 +46,19 @@ $ anvil
 ```
 
 ### Deploy
+Load environment variables
+```shell
+$ source .env
+```
 
+Deploy the contract
 ```shell
 $ forge create ./src/CastClouds.sol:CastClouds --rpc-url $BASE_SEPOLIA_RPC --constructor-args 0x6bd62FeB486Bf699Ac04eD6DC09dE36D11720509 --account deployer
 ```
 
-### Cast
-
+Verify the contract
 ```shell
-$ cast <subcommand>
+forge verify-contract 0xb6BDC64F243350AD1220dfd1Ab86bcbBbC42C526 ./src/CastClouds.sol:CastClouds --constructor-args $(cast abi-encode "constructor(address)" 0x6bd62FeB486Bf699Ac04eD6DC09dE36D11720509) --chain 84532 --watch
 ```
 
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
-
-Base Sepolia deployment address: 0x8922242064f5d41eF904fBC52Da8781a05b3BA82
+Base Sepolia deployment address: 0xb6BDC64F243350AD1220dfd1Ab86bcbBbC42C526

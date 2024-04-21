@@ -35,13 +35,13 @@ contract CastCloudsTest is Test {
     function test_OnlyOpenMinting() public {
         vm.prank(alice);
         vm.expectRevert(CastClouds.MintingClosed.selector);
-        castClouds.mint(0);
+        castClouds.mint(0, alice);
 
         vm.prank(owner);
         castClouds.openMinting(0);
 
         vm.prank(alice);
-        castClouds.mint(0);
+        castClouds.mint(0, alice);
 
         assertEq(castClouds.balanceOf(alice, 0), 1);
 
@@ -50,7 +50,7 @@ contract CastCloudsTest is Test {
 
         vm.prank(bob);
         vm.expectRevert(CastClouds.MintingClosed.selector);
-        castClouds.mint(0);
+        castClouds.mint(0, bob);
     }
 
     function test_OnlyOneMintPerUser() public {
@@ -58,22 +58,22 @@ contract CastCloudsTest is Test {
         castClouds.openMinting(0);
 
         vm.prank(alice);
-        castClouds.mint(0);
+        castClouds.mint(0, alice);
 
         assertEq(castClouds.balanceOf(alice, 0), 1);
 
         vm.prank(alice);
         vm.expectRevert(CastClouds.OneMintPerAccount.selector);
-        castClouds.mint(0);
+        castClouds.mint(0, alice);
 
         vm.prank(bob);
-        castClouds.mint(0);
+        castClouds.mint(0, bob);
 
         assertEq(castClouds.balanceOf(bob, 0), 1);
 
         vm.prank(bob);
         vm.expectRevert(CastClouds.OneMintPerAccount.selector);
-        castClouds.mint(0);
+        castClouds.mint(0, bob);
     }
 
     function test_LockingAccessControl() public {
@@ -144,17 +144,17 @@ contract CastCloudsTest is Test {
         castClouds.openMinting(0);
 
         vm.prank(alice);
-        castClouds.mint(0);
+        castClouds.mint(0, alice);
 
         assertEq(castClouds.totalSupply(0), 1);
 
         vm.prank(bob);
-        castClouds.mint(0);
+        castClouds.mint(0, bob);
 
         assertEq(castClouds.totalSupply(0), 2);
 
         vm.prank(chad);
-        castClouds.mint(0);
+        castClouds.mint(0, chad);
 
         assertEq(castClouds.totalSupply(0), 3);        
     }

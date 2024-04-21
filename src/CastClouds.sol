@@ -17,13 +17,13 @@ contract CastClouds is Ownable, ERC1155Supply {
 
     constructor(address _owner) ERC1155("") Ownable(_owner) {}
 
-    function mint(uint256 _id) external {
+    function mint(uint256 _id, address _receiver) external {
         if (!mintingOpen[_id]) revert MintingClosed();
         if (minted[_id][msg.sender]) revert OneMintPerAccount();
 
         minted[_id][msg.sender] = true;
 
-        _mint(msg.sender, _id, 1, "");
+        _mint(_receiver, _id, 1, "");
     }
 
     function updateUri(uint256 _id, string memory _uri) external onlyOwner {
