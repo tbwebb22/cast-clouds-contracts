@@ -10,6 +10,9 @@ contract CastClouds is Ownable, ERC1155Supply {
     mapping(uint256 id => bool) public locked;
     mapping(uint256 id => mapping(address account => bool)) public minted;
 
+    event MetadataUpdate(uint256 _tokenId);
+    event PermanentURI(string _value, uint256 indexed _id);
+
     error MintingOpen();
     error MintingClosed();
     error Locked();
@@ -19,7 +22,7 @@ contract CastClouds is Ownable, ERC1155Supply {
 
     function mint(uint256 _id) external {
         if (!mintingOpen[_id]) revert MintingClosed();
-        if (minted[_id][msg.sender]) revert OneMintPerAccount();
+        // if (minted[_id][msg.sender]) revert OneMintPerAccount();
 
         minted[_id][msg.sender] = true;
 
@@ -30,12 +33,16 @@ contract CastClouds is Ownable, ERC1155Supply {
         if (locked[_id]) revert Locked();
 
         _uris[_id] = _uri;
+
+        emit MetadataUpdate(_id);
     }
 
     function lock(uint256 _id) external onlyOwner {
         if (locked[_id]) revert Locked();
 
         locked[_id] = true;
+
+        emit PermanentURI(_uris[_id], _id);
     }
 
     function openMinting(uint256 _id) external onlyOwner {

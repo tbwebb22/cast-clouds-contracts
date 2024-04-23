@@ -58,7 +58,7 @@ $ forge create ./src/CastClouds.sol:CastClouds --rpc-url $BASE_SEPOLIA_RPC --con
 
 Verify the contract
 ```shell
-forge verify-contract 0xD56928c222408575576eEd39959C6779b2646776 ./src/CastClouds.sol:CastClouds --constructor-args $(cast abi-encode "constructor(address)" 0x6bd62FeB486Bf699Ac04eD6DC09dE36D11720509) --chain 84532 --watch
+forge verify-contract 0xc33D61f88f207D2c1E3E2e90cF389F9bfCb25C2a ./src/CastClouds.sol:CastClouds --constructor-args $(cast abi-encode "constructor(address)" 0x6bd62FeB486Bf699Ac04eD6DC09dE36D11720509) --chain 84532 --watch
 ```
 
-Base Sepolia deployment address: 0xD56928c222408575576eEd39959C6779b2646776
+Base Sepolia deployment address: 0xc33D61f88f207D2c1E3E2e90cF389F9bfCb25C2a
