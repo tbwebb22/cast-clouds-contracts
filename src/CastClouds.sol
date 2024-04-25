@@ -2,9 +2,11 @@
 pragma solidity ^0.8.20;
 
 import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
+import { ERC2981 } from "@openzeppelin/contracts/token/common/ERC2981.sol";
 import { ERC1155, ERC1155Supply } from "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 
-contract CastClouds is Ownable, ERC1155Supply {
+contract CastClouds is Ownable, ERC1155Supply, ERC2981 {
+    string public name = "Cast Clouds";
     mapping(uint256 id => string uri) private _uris;
     mapping(uint256 id => bool) public mintingOpen;
     mapping(uint256 id => bool) public locked;
@@ -18,11 +20,13 @@ contract CastClouds is Ownable, ERC1155Supply {
     error Locked();
     error OneMintPerAccount();
 
-    constructor(address _owner) ERC1155("") Ownable(_owner) {}
+    constructor(address _owner, address _royaltyReceiver) ERC1155("") Ownable(_owner) {
+        _setDefaultRoyalty(_royaltyReceiver, 250);
+    }
 
     function mint(uint256 _id) external {
         if (!mintingOpen[_id]) revert MintingClosed();
-        // if (minted[_id][msg.sender]) revert OneMintPerAccount();
+        if (minted[_id][msg.sender]) revert OneMintPerAccount();
 
         minted[_id][msg.sender] = true;
 
@@ -58,7 +62,17 @@ contract CastClouds is Ownable, ERC1155Supply {
         mintingOpen[_id] = false;
     }
 
+    // function setDefaultRoyalty(address _receiver, uint96 _feeNumerator) externaly onlyOwner {
+
+    // }
+
+    // specific token royalty
+
     function uri(uint256 _id) public view override returns (string memory) {
         return _uris[_id];
+    }
+
+    function supportsInterface(bytes4 interfaceId) public view override(ERC1155, ERC2981) returns (bool) {
+        return super.supportsInterface(interfaceId);
     }
 }

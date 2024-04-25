@@ -16,14 +16,16 @@ contract CastCloudsTest is Test {
     address public alice;
     address public bob;
     address public chad;
+    address public royaltyReceiver;
 
     function setUp() public {
         owner = createUser(0);
         alice = createUser(1);
         bob = createUser(2);
         chad = createUser(3);
+        royaltyReceiver = createUser(4);
 
-        castClouds = new CastClouds(owner);
+        castClouds = new CastClouds(owner, royaltyReceiver);
     }
 
     function createUser(uint32 i) public returns (address) {
@@ -157,5 +159,19 @@ contract CastCloudsTest is Test {
         castClouds.mint(0);
 
         assertEq(castClouds.totalSupply(0), 3);        
+    }
+
+    function test_ERC165Interfaces() public view {
+        // Supports ERC-165 interface
+        assertEq(castClouds.supportsInterface(0x01ffc9a7), true);
+
+        // Supports ERC-1155 interface
+        assertEq(castClouds.supportsInterface(0xd9b67a26), true);
+
+        // Supports Metadata URI extension interface
+        assertEq(castClouds.supportsInterface(0x0e89341c), true);
+
+        // Supports ERC-2981 interface
+        assertEq(castClouds.supportsInterface(0x2a55205a), true);
     }
 }
