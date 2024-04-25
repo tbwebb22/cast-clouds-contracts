@@ -62,9 +62,13 @@ contract CastClouds is Ownable, ERC1155Supply, ERC2981 {
         mintingOpen[_id] = false;
     }
 
-    // function setDefaultRoyalty(address _receiver, uint96 _feeNumerator) externaly onlyOwner {
+    function setDefaultRoyalty(address _receiver, uint96 _feeNumerator) external onlyOwner {
+        _setDefaultRoyalty(_receiver, _feeNumerator);
+    }
 
-    // }
+    function setTokenRoyalty(uint256 _tokenId, address _receiver, uint96 _feeNumerator) external onlyOwner {
+        _setTokenRoyalty(_tokenId, _receiver, _feeNumerator);
+    }
 
     // specific token royalty
 

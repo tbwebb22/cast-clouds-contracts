@@ -161,6 +161,44 @@ contract CastCloudsTest is Test {
         assertEq(castClouds.totalSupply(0), 3);        
     }
 
+    function test_SetDefaultRoyalty() public {
+        (address royaltyRecipient, uint256 royaltyAmount) = castClouds.royaltyInfo(0, 10000);
+
+        assertEq(royaltyRecipient, royaltyReceiver);
+        assertEq(royaltyAmount, 250);
+
+        vm.prank(alice);
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, alice));
+        castClouds.setDefaultRoyalty(alice, 100);
+
+        vm.prank(owner);
+        castClouds.setDefaultRoyalty(bob, 500);
+
+        (royaltyRecipient, royaltyAmount) = castClouds.royaltyInfo(0, 10000);
+
+        assertEq(royaltyRecipient, bob);
+        assertEq(royaltyAmount, 500);
+    }
+
+    function test_SetTokenRoyalty() public {
+        (address royaltyRecipient, uint256 royaltyAmount) = castClouds.royaltyInfo(10, 10000);
+
+        assertEq(royaltyRecipient, royaltyReceiver);
+        assertEq(royaltyAmount, 250);
+
+        vm.prank(alice);
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, alice));
+        castClouds.setTokenRoyalty(10, alice, 100);
+
+        vm.prank(owner);
+        castClouds.setTokenRoyalty(10, bob, 500);
+
+        (royaltyRecipient, royaltyAmount) = castClouds.royaltyInfo(10, 10000);
+
+        assertEq(royaltyRecipient, bob);
+        assertEq(royaltyAmount, 500);
+    }
+
     function test_ERC165Interfaces() public view {
         // Supports ERC-165 interface
         assertEq(castClouds.supportsInterface(0x01ffc9a7), true);
